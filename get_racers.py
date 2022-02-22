@@ -25,7 +25,7 @@ data = {
 }
 # Selecting the TRs that I need
 race_trs = soup.find_all('tr')
-print(soup)
+
 placement = []
 for i in race_trs:
     finishers = i.select_one('td:nth-of-type(1)').text

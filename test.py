@@ -1,13 +1,17 @@
 import pandas
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlencode
+
 dataframe = pandas.read_csv('race_results_urls.csv')
 
+KEY = 'b47eaa17dc56908f412b0195c7abf9a8'
 
 def get_placement(url):
-    WEBPAGE = requests.get(url)
+    params = {'api_key': KEY, 'url': url}
+    response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
     # Parsing with beautiful soup
-    soup = BeautifulSoup(WEBPAGE.content, 'html5lib')
+    soup = BeautifulSoup(response.content, 'html5lib')
     race_trs = soup.find_all('tr')
     placement = []
     for i in race_trs:
@@ -22,10 +26,12 @@ def get_placement(url):
     for i in placement:
         new_placement.append(i.strip())
     return new_placement
+
 def get_gender(url):
-    WEBPAGE = requests.get(url)
+    params = {'api_key': KEY, 'url': url}
+    response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
     # Parsing with beautiful soup
-    soup = BeautifulSoup(WEBPAGE.content, 'html5lib')
+    soup = BeautifulSoup(response.content, 'html5lib')
     race_trs = soup.find_all('tr')
     gender = soup.find_all('div', {'class': 'tw-font-light'})
     gender_age_arr = []
@@ -40,15 +46,17 @@ def get_gender(url):
     gender.append(gender_age_arr[0::2])
     return gender
 def get_race_name(url):
-    WEBPAGE = requests.get(url)
+    params = {'api_key': KEY, 'url': url}
+    response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
     # Parsing with beautiful soup
-    soup = BeautifulSoup(WEBPAGE.content, 'html5lib')
+    soup = BeautifulSoup(response.content, 'html5lib')
     race_trs = soup.find_all('tr')
     return soup.find('title').text
 def get_age(url):
-    WEBPAGE = requests.get(url)
+    params = {'api_key': KEY, 'url': url}
+    response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
     # Parsing with beautiful soup
-    soup = BeautifulSoup(WEBPAGE.content, 'html5lib')
+    soup = BeautifulSoup(response.content, 'html5lib')
     race_trs = soup.find_all('tr')
 
     gender = soup.find_all('div', {'class': 'tw-font-light'})
@@ -65,9 +73,10 @@ def get_age(url):
 
     return age
 def get_name(url):
-    WEBPAGE = requests.get(url)
+    params = {'api_key': KEY, 'url': url}
+    response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
     # Parsing with beautiful soup
-    soup = BeautifulSoup(WEBPAGE.content, 'html5lib')
+    soup = BeautifulSoup(response.content, 'html5lib')
     race_trs = soup.find_all('tr')
 
     new_counter = 1
@@ -81,8 +90,6 @@ def get_name(url):
         new_counter += 1
     return names
 
-
-
 def get_racer_data():
     data = {
         'race': [],
@@ -92,7 +99,7 @@ def get_racer_data():
         'age': []
     }
     page_number=1
-    while page_number<=len(dataframe['0'][0:50]):
+    while page_number<=len(dataframe['0'][0:3]):
         url = dataframe['0'][page_number]
         data['race'].append(get_race_name(url))
         data['name'].append(get_name(url))
@@ -103,7 +110,5 @@ def get_racer_data():
     return pandas.DataFrame(data)
 
 results = get_racer_data()
-
 print(results)
-
 results.to_csv('individual_race_data.csv')

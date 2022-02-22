@@ -30,9 +30,7 @@ def get_placement(url):
 def get_gender(url):
     params = {'api_key': KEY, 'url': url}
     response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
-    # Parsing with beautiful soup
     soup = BeautifulSoup(response.content, 'html5lib')
-    race_trs = soup.find_all('tr')
     gender = soup.find_all('div', {'class': 'tw-font-light'})
     gender_age_arr = []
     for i in gender:
@@ -40,7 +38,6 @@ def get_gender(url):
         new_str = string.replace('<div class="tw-font-light">', "")
         new_new = new_str.replace('</div>', "")
         final = new_new.replace('<div class="tw-pr-1 tw-font-light">', "")
-
         gender_age_arr.append(final)
     gender = []
     gender.append(gender_age_arr[0::2])
@@ -58,7 +55,6 @@ def get_age(url):
     # Parsing with beautiful soup
     soup = BeautifulSoup(response.content, 'html5lib')
     race_trs = soup.find_all('tr')
-
     gender = soup.find_all('div', {'class': 'tw-font-light'})
     gender_age_arr = []
     for i in gender:
@@ -70,7 +66,6 @@ def get_age(url):
         gender_age_arr.append(final)
     age = []
     age=gender_age_arr[1::2]
-
     return age
 def get_name(url):
     params = {'api_key': KEY, 'url': url}

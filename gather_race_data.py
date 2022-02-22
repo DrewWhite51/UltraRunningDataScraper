@@ -70,7 +70,6 @@ def gather_race_results():
         race_trs = soup.find_all('tr', {'class': 'race'})
         # Looping through all of the trs with the class of race
         for i in race_trs:
-            # print('---------------')
             # print(get_race_date(i).strip())
             data['date'].append(get_race_date(i).strip())
             # print(get_race_name(i).strip())

@@ -104,6 +104,7 @@ def get_racer_data():
         page_number+=1
     return pandas.DataFrame(data)
 
-results = get_racer_data()
-print(results)
-results.to_csv('individual_race_data.csv')
+
+# results = get_racer_data()
+
+# results.to_csv('individual_race_data.csv')

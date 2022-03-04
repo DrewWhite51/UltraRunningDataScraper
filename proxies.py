@@ -15,3 +15,7 @@ KEY = 'b47eaa17dc56908f412b0195c7abf9a8'
 individual_race_data = pandas.read_csv('individual_race_data.csv')
 
 
+# print(individual_race_data['name'].iloc[0])
+
+for i in individual_race_data['name'].iloc[0]:
+    print(i)
